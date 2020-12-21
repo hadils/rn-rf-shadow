@@ -1,8 +1,8 @@
 (ns example.events
   (:require
-   [re-frame.core :refer [reg-event-db after]]
-   [clojure.spec.alpha :as s]
-   [example.db :as db :refer [app-db]]))
+    [re-frame.core :refer [reg-event-db after]]
+    [clojure.spec.alpha :as s]
+    [example.db :as db :refer [app-db]]))
 
 ;; -- Interceptors ------------------------------------------------------------
 ;;
@@ -23,13 +23,40 @@
 ;; -- Handlers --------------------------------------------------------------
 
 (reg-event-db
- :initialize-db
- validate-spec
- (fn [_ _]
-   app-db))
+  :initialize-db
+  validate-spec
+  (fn [_ _]
+    app-db))
 
 (reg-event-db
- :inc-counter
- validate-spec
- (fn [db [_ _]]
-   (update db :counter inc)))
+  :inc-counter
+  validate-spec
+  (fn [db [_ _]]
+    (update db :counter inc)))
+
+(reg-event-db
+  :change-text
+  validate-spec
+  (fn [db [_ s]]
+    (assoc db :text-input s)))
+
+(reg-event-db
+  :clear-text
+  validate-spec
+  (fn [db [_ _]]
+    (assoc db :text-input "")))
+
+(reg-event-db
+  :add-item-to-list
+  validate-spec
+  (fn [db [_ _]]
+    (let [item (:text-input db)]
+      (if (seq item)
+        (update db :todo-list #(conj % {:key (str (random-uuid)) :item item}))
+        db))))
+
+(reg-event-db
+  :delete-item
+  validate-spec
+  (fn [db [_ k]]
+    (update db :todo-list (fn [items] (filter #(not= k (:key %)) items)))))
