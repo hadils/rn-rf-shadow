@@ -15,3 +15,8 @@
   :get-todo-list
   (fn [db _]
     (:todo-list db)))
+
+(reg-sub
+  :is-focus
+  (fn [db [_ f]]
+    (= (:focus db) f)))

@@ -4,6 +4,7 @@
 ;; spec of app-db
 (s/def ::counter number?)
 (s/def ::text-input string?)
+(s/def ::focus #{:input :list :elsewhere})
 (s/def ::key string?)
 (s/def ::item string?)
 (s/def ::todo-list (s/coll-of
@@ -13,5 +14,6 @@
 
 ;; initial state of app-db
 (defonce app-db {:counter 0
+                 :focus :input
                  :text-input ""
                  :todo-list []})

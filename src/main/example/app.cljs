@@ -30,8 +30,10 @@
                       :justify-content :space-around
                       :width           "60%"}
    :button           {:width "40%"}
-   :item-container   {:margin 5
-                      :background-color :pink}})
+   :item-container   {:margin           5
+                      :background-color :pink}
+   :item             {:font-size   30
+                      :font-weight :bold}})
 
 (defn root []
   [:> rn/View {:style (:container styles)}
@@ -39,28 +41,28 @@
     [:> rn/TextInput {:placeholder       "Goal..."
                       :placeholder-color :gray
                       :keyboard          :default
+                      :auto-focus        true
                       :style             (:input styles)
+                      :on-submit-editing #(rf/dispatch [:add-item-to-list])
                       :on-change-text    #(rf/dispatch-sync [:change-text %])
                       :value             @(rf/subscribe [:get-item])}]
     [:> rn/View {:style (:button-container styles)}
-     [:> rn/Button {:title    "ADD"
+     [:> rn/Button {:title    "DONE"
                     :color    :blue
                     :style    (:button styles)
-                    :on-press #(rf/dispatch [:add-item-to-list])}]
-     [:> rn/Button {:title    "CANCEL"
-                    :color    :red
-                    :style    (:button styles)
-                    :on-press #(rf/dispatch [:clear-text])}]]]
+                    :on-press #(rf/dispatch [:change-focus-to :list])}]
+     ]]
    [:> rn/View {:style (:list-container styles)}
     [:> rn/FlatList {:data        @(rf/subscribe [:get-todo-list])
                      :render-item (fn [obj]
-                                    (let [obj (.-item obj)
-                                          item (get obj "item")
-                                          key (get obj "key")]
+                                    (let [cljobj (.-item obj)
+                                          item (.-item cljobj)
+                                          key (.-key cljobj)]
+                                      (js/console.log "obj=" cljobj "item=" item "key=" key)
                                       (r/as-element
                                         [:> rn/View {:style (:item-container styles)}
                                          [:> rn/Pressable {:on-press #(rf/dispatch [:delete-item key])}
-                                          [:> rn/Text item]]])))}]]])
+                                          [:> rn/Text {:style (:item styles)} item]]])))}]]])
 
 (defn start
   {:dev/after-load true}

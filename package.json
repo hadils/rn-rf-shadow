@@ -11,8 +11,8 @@
     "eject": "npx expo eject"
   },
   "dependencies": {
-    "expo-cli": "4.0.2",
     "expo": "^40.0.0",
+    "expo-cli": "^4.0.17",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.0.tar.gz",

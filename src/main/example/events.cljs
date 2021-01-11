@@ -1,6 +1,6 @@
 (ns example.events
   (:require
-    [re-frame.core :refer [reg-event-db after]]
+    [re-frame.core :refer [reg-event-db reg-event-fx after]]
     [clojure.spec.alpha :as s]
     [example.db :as db :refer [app-db]]))
 
@@ -46,17 +46,26 @@
   (fn [db [_ _]]
     (assoc db :text-input "")))
 
-(reg-event-db
+(reg-event-fx
   :add-item-to-list
   validate-spec
-  (fn [db [_ _]]
+  (fn [{:keys [db]} [_ _]]
     (let [item (:text-input db)]
-      (if (seq item)
-        (update db :todo-list #(conj % {:key (str (random-uuid)) :item item}))
-        db))))
+      {:db (if (seq item)
+             (update db :todo-list #(into [] (conj % {:key (str (random-uuid)) :item item})))
+             db)
+       :fx [[:dispatch [:clear-text nil]]
+            [:dispatch [:change-focus-to :elsewhere]]
+            [:dispatch [:change-focus-to :input]]]})))
 
 (reg-event-db
   :delete-item
   validate-spec
   (fn [db [_ k]]
-    (update db :todo-list (fn [items] (filter #(not= k (:key %)) items)))))
+    (update db :todo-list (fn [items] (into [] (filter #(not= k (:key %)) items))))))
+
+(reg-event-db
+  :change-focus-to
+  validate-spec
+  (fn [db [_ f]]
+    (assoc db :focus f)))
