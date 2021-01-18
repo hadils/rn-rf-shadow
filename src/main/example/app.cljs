@@ -1,6 +1,7 @@
 (ns example.app
   (:require
     ["react-native" :as rn]
+    [oops.core :refer [ocall]]
     [reagent.core :as r]
     [re-frame.core :as rf]
     [shadow.expo :as expo]
@@ -12,6 +13,8 @@
 ;; must use path relative to :output-dir
 
 (defonce splash-img (js/require "../assets/shadow-cljs.png"))
+
+
 
 (def styles
   {:container        {}

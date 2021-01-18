@@ -6,8 +6,9 @@
 
  :deps {org.clojure/clojure {:mvn/version "1.10.1"}
         org.clojure/clojurescript {:mvn/version "1.10.773"}
-        reagent {:mvn/version "1.0.0"}
-        re-frame {:mvn/version "1.1.2"}
-        thheller/shadow-cljs {:mvn/version "2.11.13"}}
+        reagent/reagent {:mvn/version "1.0.0"}
+        re-frame/re-frame {:mvn/version "1.1.2"}
+        thheller/shadow-cljs {:mvn/version "2.11.13"}
+        binaryage/oops {:mvn/version "0.7.0"}}
 
  :aliases {:dev {:extra-paths ["src/test" "src/dev"]}}}

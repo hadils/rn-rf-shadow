@@ -4,7 +4,8 @@
                 "src/test"]
 
  :dependencies [[reagent "1.0.0"]
-                [re-frame "1.1.2"]]
+                [re-frame "1.1.2"]
+                [binaryage/oops "0.7.0"]]
 
  :builds {:app {:target           :react-native
                 :init-fn          example.app/init
@@ -12,3 +13,4 @@
                 :compiler-options {:infer-externs :auto}
                 :devtools         {:autoload true
                                    :preloads [shadow.expo.keep-awake]}}}}
+s
